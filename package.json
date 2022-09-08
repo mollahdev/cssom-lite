@@ -1,0 +1,28 @@
+{
+  "name": "css-maker",
+  "version": "1.0.0",
+  "description": "Generate css with javascript",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "start": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mollahdev/css-maker.git"
+  },
+  "keywords": [],
+  "author": "Ashraf Mollah <mollah.dev@gmail.com> (https://www.linkedin.com/in/mollah-dev/)",
+  "license": "ISC",
+  "email" : "mollah.dev@gmail.com",
+  "bugs": {
+    "url": "https://github.com/mollahdev/css-maker/issues"
+  },
+  "homepage": "https://github.com/mollahdev/css-maker#readme",
+  "devDependencies": {
+    "ts-loader": "^9.3.1",
+    "typescript": "^4.8.2",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  }
+}
