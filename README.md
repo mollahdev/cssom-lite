@@ -1,7 +1,7 @@
 # CSSOM Lite
 Generate css with javascript
-
-##How to use:
+---
+## How to use:
 
 ```jsx
 import CSSOMLite from 'cssom-lite';
