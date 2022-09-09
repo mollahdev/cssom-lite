@@ -1,6 +1,6 @@
 {
   "name": "cssom-lite",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Generate css with javascript",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,7 +14,7 @@
   "keywords": [],
   "author": "Ashraf Mollah <mollah.dev@gmail.com> (https://www.linkedin.com/in/mollah-dev/)",
   "license": "ISC",
-  "email" : "mollah.dev@gmail.com",
+  "email": "mollah.dev@gmail.com",
   "bugs": {
     "url": "https://github.com/mollahdev/cssom-lite/issues"
   },
