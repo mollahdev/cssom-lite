@@ -1,6 +1,6 @@
 import Base from "./base";
 import { responsiveOption, stringObj } from "./interfaces";
-export default class CSSMaker extends Base {
+export default class CSSOMLite extends Base {
 	/**
 	 * @param  {string} deviceName
 	 * @param  {number} maxPoint

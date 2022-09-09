@@ -1,6 +1,6 @@
 {
-  "name": "css-maker",
-  "version": "1.0.0",
+  "name": "cssom-lite",
+  "version": "1.0.1",
   "description": "Generate css with javascript",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,16 +9,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mollahdev/css-maker.git"
+    "url": "git+https://github.com/mollahdev/cssom-lite.git"
   },
   "keywords": [],
   "author": "Ashraf Mollah <mollah.dev@gmail.com> (https://www.linkedin.com/in/mollah-dev/)",
   "license": "ISC",
   "email" : "mollah.dev@gmail.com",
   "bugs": {
-    "url": "https://github.com/mollahdev/css-maker/issues"
+    "url": "https://github.com/mollahdev/cssom-lite/issues"
   },
-  "homepage": "https://github.com/mollahdev/css-maker#readme",
+  "homepage": "https://github.com/mollahdev/cssom-lite#readme",
   "devDependencies": {
     "ts-loader": "^9.3.1",
     "typescript": "^4.8.2",

@@ -1,2 +1,2 @@
-# css-maker
+# CSSOM Lite
 Generate css with javascript
