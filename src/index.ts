@@ -86,6 +86,13 @@ export default class CSSOMLite extends Base {
 		const rules = sortHashes.call(this);
 
 		let text = '';
+
+		// merge custom css
+		for (let i in css) {
+			text += css[i];
+		}
+
+		// merge css rules
 		for (let hash in rules) {
 
 			let screenText = convertRules.call(this, rules[hash]);
@@ -95,10 +102,6 @@ export default class CSSOMLite extends Base {
 			}
 
 			text += screenText;
-		}
-
-		for (let i in css) {
-			text += css[i];
 		}
 
 		return text;
