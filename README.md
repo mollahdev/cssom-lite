@@ -1,6 +1,6 @@
 # CSSOM Lite
 Generate css with javascript
----
+
 ## How to use:
 
 ```jsx
