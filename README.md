@@ -5,7 +5,7 @@ Generate css with javascript
 
 ##How to use:
 
-```
+```jsx
 import CSSOMLite from 'cssom-lite';
 
 const sheet = new CSSOMLite();
