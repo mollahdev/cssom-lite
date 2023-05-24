@@ -31,17 +31,12 @@ export default class Base {
 
         self.devices = sortedDevices;
     }
-    /**
-     * @param  {string} str
-     * @returns string
-     */
+   
     protected removeMultiWhiteSpace(str: string): string {
         if (typeof str !== 'string') return str;
         return str.trim().replace(/ +(?= )/g, '');
     }
-    /**
-     * @param  {responsiveOption} responsive
-     */
+   
     protected responsiveToHash(responsive: responsiveOption): string {
         let hash = [];
         let endPoint: keyof typeof responsive
@@ -50,9 +45,7 @@ export default class Base {
         }
         return hash.join('-');
     }
-    /**
-     * @param  {string} hash
-     */
+   
     protected hashToResponsive(hash: string): devicesOption {
         const responsive: devicesOption = {};
         const hashArray = hash.split('-').filter(String);
@@ -104,9 +97,7 @@ export default class Base {
 
         return sortedRules;
     }
-    /**
-     * @param  {string} responsiveHash
-     */
+   
     createResponsiveFormat(responsiveHash: string) {
         const responsive = this.hashToResponsive.call(this, responsiveHash)
         const responsiveFormat = [];
@@ -118,10 +109,6 @@ export default class Base {
         return '@media' + responsiveFormat.join(' and ');
     }
 
-    /**
-     * @param  {stringObj} properties
-     * @returns string
-     */
     convertProperties(properties: stringObj): string {
         let convertedProperties = '';
         for (let property in properties) {
@@ -129,9 +116,7 @@ export default class Base {
         }
         return convertedProperties;
     }
-    /**
-     * @param  {{[key:string]:{[key:string]:string}}} rules
-     */
+   
     convertRules(rules: { [key: string]: { [key: string]: string } }) {
         let convertedRules = '';
         for (let selector in rules) {

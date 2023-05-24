@@ -1,118 +1,138 @@
-"use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var base_1 = __importDefault(require("./base"));
-var CSSOMLite = /** @class */ (function (_super) {
-    __extends(CSSOMLite, _super);
-    function CSSOMLite() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var d = Object.defineProperty;
+var v = (a, e, t) => e in a ? d(a, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : a[e] = t;
+var h = (a, e, t) => (v(a, typeof e != "symbol" ? e + "" : e, t), t);
+class p {
+  constructor() {
+    h(this, "devices", {});
+    h(this, "css", {});
+    h(this, "rules", {});
+  }
+  get uid() {
+    return Math.floor(Math.random() * 1e5);
+  }
+  sortDevices() {
+    const e = this, t = Object.keys(e.devices);
+    if (t.length < 2)
+      return;
+    t.sort((s, n) => e.devices[s] - e.devices[n]);
+    const r = {};
+    t.forEach(function(s) {
+      r[s] = e.devices[s];
+    }), e.devices = r;
+  }
+  removeMultiWhiteSpace(e) {
+    return typeof e != "string" ? e : e.trim().replace(/ +(?= )/g, "");
+  }
+  responsiveToHash(e) {
+    let t = [], r;
+    for (r in e)
+      t.push(r + "_" + e[r]);
+    return t.join("-");
+  }
+  hashToResponsive(e) {
+    const t = {};
+    return e.split("-").filter(String).forEach((s) => {
+      const [n, i] = s.split(/_(.+)/);
+      t[n] = this.devices[i];
+    }), t;
+  }
+  sortHashes() {
+    const e = this, { rules: t, hashToResponsive: r } = e, s = Object.keys(t);
+    if (s.length < 2)
+      return t;
+    s.sort(function(i, l) {
+      if (i === "all")
+        return -1;
+      if (l === "all")
+        return 1;
+      let o = r.call(e, i), c = r.call(e, l);
+      if (o.max && c.max)
+        return c.max - o.max;
+      if (o.min && c.min)
+        return c.min - o.min;
+      const u = o.max ?? o.min;
+      return (c.max ?? c.min) - u;
+    });
+    const n = {};
+    return s.forEach((i) => {
+      n[i] = t[i];
+    }), n;
+  }
+  createResponsiveFormat(e) {
+    const t = this.hashToResponsive.call(this, e), r = [];
+    for (let s in t)
+      r.push("(" + s + "-width:" + t[s] + "px)");
+    return "@media" + r.join(" and ");
+  }
+  convertProperties(e) {
+    let t = "";
+    for (let r in e)
+      t += r + ":" + e[r] + ";";
+    return t;
+  }
+  convertRules(e) {
+    let t = "";
+    for (let r in e) {
+      const s = this.convertProperties(e[r]);
+      s && (t += r + "{" + s + "}");
     }
-    /**
-     * @param  {string} deviceName
-     * @param  {number} maxPoint
-     */
-    CSSOMLite.prototype.addDevice = function (deviceName, maxPoint) {
-        this.devices[deviceName] = maxPoint;
-        this.sortDevices();
-    };
-    /**
-     * @param  {string} content
-     * @returns void
-     */
-    CSSOMLite.prototype.addCSS = function (content) {
-        this.css[this.uid] = content;
-    };
-    /**
-     * @param  {string} selector
-     * @param  {string} properties
-     * @param  {responsiveOption} responsive?
-     */
-    CSSOMLite.prototype.addRule = function (selector, properties, responsive) {
-        var self = this;
-        var hash = 'all';
-        var propertiesObj = {};
-        selector = self.removeMultiWhiteSpace(selector);
-        properties = self.removeMultiWhiteSpace(properties);
-        if (responsive && typeof responsive === 'object') {
-            hash = self.responsiveToHash(responsive);
+    return t;
+  }
+}
+class y extends p {
+  addDevice(e, t) {
+    this.devices[e] = t, this.sortDevices();
+  }
+  addCSS(e) {
+    this.css[this.uid] = e;
+  }
+  addRule(e, t, r) {
+    const s = this;
+    let n = "all", i = {};
+    if (e = s.removeMultiWhiteSpace(e), t = s.removeMultiWhiteSpace(t), r && typeof r == "object" && (n = s.responsiveToHash(r)), s.rules[n] || (s.rules[n] = {}), !t && e) {
+      const l = e.match(/[^{]+\{[^}]+}/g);
+      if (!l)
+        return;
+      for (let o in l) {
+        const c = l[o].match(/([^{]+)\{([^}]+)}/);
+        if (c) {
+          const u = c[1], f = c[2];
+          s.addRule(u, f, r);
         }
-        if (!self.rules[hash]) {
-            self.rules[hash] = {};
+      }
+      return;
+    }
+    if (s.rules[n][e] || (s.rules[n][e] = {}), typeof t == "string") {
+      i = t.split(";").filter(String);
+      const l = {};
+      try {
+        let o;
+        for (o in i) {
+          const [c, u] = i[o].split(/:(.*)?/);
+          l[c.trim()] = u.trim().replace(";", "");
         }
-        if (!properties && selector) {
-            var parsedRules = selector.match(/[^{]+\{[^}]+}/g);
-            if (!parsedRules)
-                return;
-            for (var i in parsedRules) {
-                var parsedRule = parsedRules[i].match(/([^{]+)\{([^}]+)}/);
-                if (parsedRule) {
-                    var _selector = parsedRule[1];
-                    var _properties = parsedRule[2];
-                    self.addRule(_selector, _properties, responsive);
-                }
-            }
-            return;
-        }
-        if (!self.rules[hash][selector]) {
-            self.rules[hash][selector] = {};
-        }
-        if ('string' === typeof properties) {
-            propertiesObj = properties.split(';').filter(String);
-            var orderedRules = {};
-            try {
-                var i = void 0;
-                for (i in propertiesObj) {
-                    var _a = propertiesObj[i].split(/:(.*)?/), property = _a[0], value = _a[1];
-                    orderedRules[property.trim()] = value.trim().replace(';', '');
-                }
-            }
-            catch (error) {
-                return;
-            }
-            propertiesObj = orderedRules;
-        }
-        Object.assign(self.rules[hash][selector], propertiesObj);
-    };
-    CSSOMLite.prototype.clear = function () {
-        this.rules = {};
-        this.css = {};
-    };
-    CSSOMLite.prototype.output = function () {
-        var _a = this, css = _a.css, convertRules = _a.convertRules, createResponsiveFormat = _a.createResponsiveFormat, sortHashes = _a.sortHashes;
-        var rules = sortHashes.call(this);
-        var text = '';
-        // merge custom css
-        for (var i in css) {
-            text += css[i];
-        }
-        // merge css rules
-        for (var hash in rules) {
-            var screenText = convertRules.call(this, rules[hash]);
-            if ('all' !== hash) {
-                screenText = createResponsiveFormat.call(this, hash) + '{' + screenText + '}';
-            }
-            text += screenText;
-        }
-        return text;
-    };
-    ;
-    return CSSOMLite;
-}(base_1.default));
-exports.default = CSSOMLite;
+      } catch {
+        return;
+      }
+      i = l;
+    }
+    Object.assign(s.rules[n][e], i);
+  }
+  clear() {
+    this.rules = {}, this.css = {};
+  }
+  output() {
+    const { css: e, convertRules: t, createResponsiveFormat: r, sortHashes: s } = this, n = s.call(this);
+    let i = "";
+    for (let l in e)
+      i += e[l];
+    for (let l in n) {
+      let o = t.call(this, n[l]);
+      l !== "all" && (o = r.call(this, l) + "{" + o + "}"), i += o;
+    }
+    return i.replace(/\s+/g, " ");
+  }
+}
+export {
+  y as default
+};

@@ -1,26 +1,17 @@
 import Base from "./base";
 import { responsiveOption, stringObj } from "./interfaces";
+
 export default class CSSOMLite extends Base {
-	/**
-	 * @param  {string} deviceName
-	 * @param  {number} maxPoint
-	 */
+	
 	public addDevice(deviceName: string, maxPoint: number): void {
 		this.devices[deviceName] = maxPoint;
 		this.sortDevices();
 	}
-	/**
-	 * @param  {string} content
-	 * @returns void
-	 */
+	
 	public addCSS(content: string): void {
 		this.css[this.uid] = content
 	}
-	/**
-	 * @param  {string} selector
-	 * @param  {string} properties
-	 * @param  {responsiveOption} responsive?
-	 */
+	
 	public addRule(selector: string, properties: string, responsive?: responsiveOption): void | false {
 
 		const self = this;
@@ -104,7 +95,7 @@ export default class CSSOMLite extends Base {
 			text += screenText;
 		}
 
-		return text;
+		return text.replace(/\s+/g, ' ');
 	};
 
 }

@@ -4,7 +4,7 @@ Generate css with javascript
 ## Import and register device:
 
 ```jsx
-import CSSOMLite from 'cssom-lite';
+import CSSOMLite from '@mollahdev/cssom-lite';
 
 const sheet = new CSSOMLite();
 
