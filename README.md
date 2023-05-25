@@ -1,5 +1,14 @@
-# CSSOM Lite
-Generate css with javascript
+## Installation
+
+### CSSOM-Lite
+
+CSSOM-Lite is available as an [npm package](https://www.npmjs.com/package/@mollahdev/cssom-lite).
+
+**npm:**
+
+```sh
+npm i @mollahdev/cssom-lite
+```
 
 ## Import and register device:
 

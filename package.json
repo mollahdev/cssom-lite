@@ -9,6 +9,7 @@
   "main": "./dist/index.umd.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "type": "module",
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -22,7 +23,13 @@
     "url": "https://github.com/mollahdev/cssom-lite/issues"
   },
   "homepage": "https://github.com/mollahdev/cssom-lite#readme",
-  "type": "module",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/mollahdev/cssom-lite"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/mollahdev"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
