@@ -1,6 +1,6 @@
 {
   "name": "@mollahdev/cssom-lite",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "author": "Ashraf Mollah <mollah.dev@gmail.com> (https://mollah.dev)",
   "description": "Generate css with javascript",
   "license": "ISC",
@@ -28,7 +28,7 @@
       "url": "https://github.com/mollahdev/cssom-lite"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/mollahdev"
+    "registry": "https://npm.pkg.github.com/@mollahdev"
   },
   "scripts": {
     "dev": "vite",
