@@ -10,6 +10,10 @@
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
+  "engines": {
+    "node": "16.x.x",
+    "npm": "8.x.x"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",
