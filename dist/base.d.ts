@@ -3,7 +3,10 @@ export default class Base {
     protected devices: devicesOption;
     protected css: cssOption;
     protected rules: rulesOption;
+    protected ignoreKeys: string[];
     protected get uid(): number;
+    protected canIgnore(value: string): boolean;
+    protected removeOldProperties(properties: string, state: {}): void;
     protected sortDevices(): void | false;
     protected removeMultiWhiteSpace(str: string): string;
     protected responsiveToHash(responsive: responsiveOption): string;

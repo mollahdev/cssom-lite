@@ -1,20 +1,30 @@
-var d = Object.defineProperty;
-var v = (a, e, t) => e in a ? d(a, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : a[e] = t;
-var h = (a, e, t) => (v(a, typeof e != "symbol" ? e + "" : e, t), t);
-class p {
+var f = Object.defineProperty;
+var d = (a, e, t) => e in a ? f(a, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : a[e] = t;
+var h = (a, e, t) => (d(a, typeof e != "symbol" ? e + "" : e, t), t);
+class v {
   constructor() {
     h(this, "devices", {});
     h(this, "css", {});
     h(this, "rules", {});
+    h(this, "ignoreKeys", ["undefined", "remove", "false", "null", "NaN", "", "true"]);
   }
   get uid() {
     return Math.floor(Math.random() * 1e5);
+  }
+  canIgnore(e) {
+    return this.ignoreKeys.includes(e.trim());
+  }
+  removeOldProperties(e, t) {
+    e.split(",").filter((s) => !this.canIgnore(s)).forEach((s) => {
+      const i = s.trim();
+      delete t[i];
+    });
   }
   sortDevices() {
     const e = this, t = Object.keys(e.devices);
     if (t.length < 2)
       return;
-    t.sort((s, n) => e.devices[s] - e.devices[n]);
+    t.sort((s, i) => e.devices[s] - e.devices[i]);
     const r = {};
     t.forEach(function(s) {
       r[s] = e.devices[s];
@@ -32,20 +42,20 @@ class p {
   hashToResponsive(e) {
     const t = {};
     return e.split("-").filter(String).forEach((s) => {
-      const [n, i] = s.split(/_(.+)/);
-      t[n] = this.devices[i];
+      const [i, n] = s.split(/_(.+)/);
+      t[i] = this.devices[n];
     }), t;
   }
   sortHashes() {
     const e = this, { rules: t, hashToResponsive: r } = e, s = Object.keys(t);
     if (s.length < 2)
       return t;
-    s.sort(function(i, l) {
-      if (i === "all")
+    s.sort(function(n, l) {
+      if (n === "all")
         return -1;
       if (l === "all")
         return 1;
-      let o = r.call(e, i), c = r.call(e, l);
+      let o = r.call(e, n), c = r.call(e, l);
       if (o.max && c.max)
         return c.max - o.max;
       if (o.min && c.min)
@@ -53,10 +63,10 @@ class p {
       const u = o.max ?? o.min;
       return (c.max ?? c.min) - u;
     });
-    const n = {};
-    return s.forEach((i) => {
-      n[i] = t[i];
-    }), n;
+    const i = {};
+    return s.forEach((n) => {
+      i[n] = t[n];
+    }), i;
   }
   createResponsiveFormat(e) {
     const t = this.hashToResponsive.call(this, e), r = [];
@@ -79,7 +89,7 @@ class p {
     return t;
   }
 }
-class y extends p {
+class y extends v {
   addDevice(e, t) {
     this.devices[e] = t, this.sortDevices();
   }
@@ -88,49 +98,36 @@ class y extends p {
   }
   addRule(e, t, r) {
     const s = this;
-    let n = "all", i = {};
-    if (e = s.removeMultiWhiteSpace(e), t = s.removeMultiWhiteSpace(t), r && typeof r == "object" && (n = s.responsiveToHash(r)), s.rules[n] || (s.rules[n] = {}), !t && e) {
-      const l = e.match(/[^{]+\{[^}]+}/g);
-      if (!l)
-        return;
-      for (let o in l) {
-        const c = l[o].match(/([^{]+)\{([^}]+)}/);
-        if (c) {
-          const u = c[1], f = c[2];
-          s.addRule(u, f, r);
-        }
-      }
-      return;
-    }
-    if (s.rules[n][e] || (s.rules[n][e] = {}), typeof t == "string") {
-      i = t.split(";").filter(String);
+    let i = "all", n = {};
+    if (e = s.removeMultiWhiteSpace(e), t = s.removeMultiWhiteSpace(t), r && typeof r == "object" && (i = s.responsiveToHash(r)), s.rules[i] || (s.rules[i] = {}), s.rules[i][e] || (s.rules[i][e] = {}), typeof t == "string") {
+      n = t.split(";").filter(String);
       const l = {};
       try {
         let o;
-        for (o in i) {
-          const [c, u] = i[o].split(/:(.*)?/);
-          l[c.trim()] = u.trim().replace(";", "");
+        for (o in n) {
+          const [c, u] = n[o].split(/:(.*)?/);
+          c.trim() === "remove" && this.removeOldProperties(u.trim(), s.rules[i][e]), !this.canIgnore(c) && !this.canIgnore(u) && (l[c.trim()] = u.trim().replace(";", ""));
         }
       } catch {
         return;
       }
-      i = l;
+      n = l;
     }
-    Object.assign(s.rules[n][e], i);
+    Object.assign(s.rules[i][e], n);
   }
   clear() {
     this.rules = {}, this.css = {};
   }
   output() {
-    const { css: e, convertRules: t, createResponsiveFormat: r, sortHashes: s } = this, n = s.call(this);
-    let i = "";
+    const { css: e, convertRules: t, createResponsiveFormat: r, sortHashes: s } = this, i = s.call(this);
+    let n = "";
     for (let l in e)
-      i += e[l];
-    for (let l in n) {
-      let o = t.call(this, n[l]);
-      l !== "all" && (o = r.call(this, l) + "{" + o + "}"), i += o;
+      n += e[l];
+    for (let l in i) {
+      let o = t.call(this, i[l]);
+      l !== "all" && (o = r.call(this, l) + "{" + o + "}"), n += o;
     }
-    return i.replace(/\s+/g, " ");
+    return n.replace(/\s+/g, " ");
   }
 }
 export {

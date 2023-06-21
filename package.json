@@ -1,6 +1,6 @@
 {
   "name": "@mollahdev/cssom-lite",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "author": "Ashraf Mollah <mollah.dev@gmail.com> (https://mollah.dev)",
   "description": "Generate css with javascript",
   "license": "ISC",
