@@ -35,9 +35,23 @@ sheet.addCSS(`
 ```
 
 ## Add rule
+CSSOM-lite ignores these properties/values, undefined, null, false, true, NaN, ''
+
 ```jsx
 sheet.addRule('.selector-a', 'background: orange');
 sheet.addRule('.selector-a', 'color: white; text-decoration:none');
+```
+
+## Add rule and remove old value
+By using "remove" property like the example, you can remove already added value,
+note: remove property will be ignored in the final css ouput
+
+```jsx
+sheet.addRule('.selector-a', 'background: orange');
+sheet.addRule('.selector-a', `
+    color: white; text-decoration:none;
+    remove: background, border, fill;
+`);
 ```
 
 ## Add responsive rule

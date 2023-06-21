@@ -29,19 +29,6 @@ export default class CSSOMLite extends Base {
 			self.rules[hash] = {}
 		}
 
-		if (!properties && selector) {
-			const parsedRules = selector.match(/[^{]+\{[^}]+}/g);
-			if (!parsedRules) return;
-			for (let i in parsedRules) {
-				const parsedRule = parsedRules[i].match(/([^{]+)\{([^}]+)}/);
-				if (parsedRule) {
-					const _selector = parsedRule[1];
-					const _properties = parsedRule[2];
-					self.addRule(_selector, _properties, responsive);
-				}
-			}
-			return;
-		}
 
 		if (!self.rules[hash][selector]) {
 			self.rules[hash][selector] = {};
@@ -54,12 +41,20 @@ export default class CSSOMLite extends Base {
 				let i: keyof typeof propertiesObj
 				for (i in propertiesObj) {
 					const [property, value] = propertiesObj[i].split(/:(.*)?/);
-					orderedRules[property.trim()] = value.trim().replace(';', '');
+					//remove properties if "remove" property exists
+					if (property.trim() === 'remove') {
+						this.removeOldProperties( value.trim(), self.rules[hash][selector] )
+					}
+
+					// parse property and value 
+					if( !this.canIgnore(property) && !this.canIgnore(value) ) {
+						orderedRules[property.trim()] = value.trim().replace(';', '');
+					}
+
 				}
 			} catch (error) {
 				return;
 			}
-
 			propertiesObj = orderedRules;
 		}
 

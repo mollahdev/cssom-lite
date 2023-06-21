@@ -5,9 +5,23 @@ export default class Base {
     protected devices: devicesOption = {}
     protected css: cssOption = {}
     protected rules: rulesOption = {}
+    protected ignoreKeys: string[] = ['undefined', 'remove', 'false', 'null', 'NaN', '', 'true']
 
     protected get uid(): number {
         return Math.floor(Math.random() * 100000);
+    }
+
+    protected canIgnore( value: string ) {
+        return this.ignoreKeys.includes(value.trim());
+    }
+
+    protected removeOldProperties(properties: string, state: {}) {
+        const keys = properties.split(',').filter(item => !this.canIgnore(item));
+        
+        keys.forEach(key => {
+            const k = key.trim() as keyof typeof state
+            delete state[k];
+        })
     }
 
     protected sortDevices(): void | false {
