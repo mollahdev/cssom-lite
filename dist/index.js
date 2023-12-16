@@ -1,6 +1,6 @@
 var f = Object.defineProperty;
-var d = (a, e, t) => e in a ? f(a, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : a[e] = t;
-var h = (a, e, t) => (d(a, typeof e != "symbol" ? e + "" : e, t), t);
+var d = (c, e, t) => e in c ? f(c, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : c[e] = t;
+var h = (c, e, t) => (d(c, typeof e != "symbol" ? e + "" : e, t), t);
 class v {
   constructor() {
     h(this, "devices", {});
@@ -50,18 +50,18 @@ class v {
     const e = this, { rules: t, hashToResponsive: r } = e, s = Object.keys(t);
     if (s.length < 2)
       return t;
-    s.sort(function(n, l) {
+    s.sort(function(n, a) {
       if (n === "all")
         return -1;
-      if (l === "all")
+      if (a === "all")
         return 1;
-      let o = r.call(e, n), c = r.call(e, l);
-      if (o.max && c.max)
-        return c.max - o.max;
-      if (o.min && c.min)
-        return c.min - o.min;
-      const u = o.max ?? o.min;
-      return (c.max ?? c.min) - u;
+      let o = r.call(e, n), l = r.call(e, a);
+      if (o.max && l.max)
+        return l.max - o.max;
+      if (o.min && l.min)
+        return l.min - o.min;
+      const u = o.max !== null && o.max !== void 0 ? o.max : o.min;
+      return (l.max !== null && l.max !== void 0 ? l.max : l.min) - u;
     });
     const i = {};
     return s.forEach((n) => {
@@ -101,17 +101,17 @@ class y extends v {
     let i = "all", n = {};
     if (e = s.removeMultiWhiteSpace(e), t = s.removeMultiWhiteSpace(t), r && typeof r == "object" && (i = s.responsiveToHash(r)), s.rules[i] || (s.rules[i] = {}), s.rules[i][e] || (s.rules[i][e] = {}), typeof t == "string") {
       n = t.split(";").filter(String);
-      const l = {};
+      const a = {};
       try {
         let o;
         for (o in n) {
-          const [c, u] = n[o].split(/:(.*)?/);
-          c.trim() === "remove" && this.removeOldProperties(u.trim(), s.rules[i][e]), !this.canIgnore(c) && !this.canIgnore(u) && (l[c.trim()] = u.trim().replace(";", ""));
+          const [l, u] = n[o].split(/:(.*)?/);
+          l.trim() === "remove" && this.removeOldProperties(u.trim(), s.rules[i][e]), !this.canIgnore(l) && !this.canIgnore(u) && (a[l.trim()] = u.trim().replace(";", ""));
         }
       } catch {
         return;
       }
-      n = l;
+      n = a;
     }
     Object.assign(s.rules[i][e], n);
   }
@@ -121,11 +121,11 @@ class y extends v {
   output() {
     const { css: e, convertRules: t, createResponsiveFormat: r, sortHashes: s } = this, i = s.call(this);
     let n = "";
-    for (let l in e)
-      n += e[l];
-    for (let l in i) {
-      let o = t.call(this, i[l]);
-      l !== "all" && (o = r.call(this, l) + "{" + o + "}"), n += o;
+    for (let a in e)
+      n += e[a];
+    for (let a in i) {
+      let o = t.call(this, i[a]);
+      a !== "all" && (o = r.call(this, a) + "{" + o + "}"), n += o;
     }
     return n.replace(/\s+/g, " ");
   }
