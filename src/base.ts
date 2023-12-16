@@ -98,8 +98,9 @@ export default class Base {
                 return bQuery.min - aQuery.min;
             }
 
-            const aQueryValue = aQuery.max ?? aQuery.min;
-            const bQueryValue = bQuery.max ?? bQuery.min;
+            // can not use ?? operator, it does not support in iPhone 11 and 12
+            const aQueryValue = ( aQuery.max !== null && aQuery.max !== undefined ) ? aQuery.max : aQuery.min;
+            const bQueryValue = ( bQuery.max !== null && bQuery.max !== undefined ) ? bQuery.max : bQuery.min;
 
             return bQueryValue - aQueryValue;
         });
